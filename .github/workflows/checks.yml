@@ -3,7 +3,7 @@ name: Code checks
 on:
   pull_request:
     branches:
-      - main  # will change the name if we want to create this on "master"
+      - main  # Adjust branch name as needed
 
 jobs:
   checks:
@@ -16,10 +16,34 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Specify your Python version
+          python-version: '3.x'  # Specify Python version
 
       - name: Install dependencies
-        run: pip install flake8  # Install flake8 linter
+        run: |
+          pip install flake8  # Install flake8 linter
+          pip install pytest coverage bandit safety sphinx mypy  # Install additional tools
 
       - name: Run linter
         run: flake8
+
+      - name: Run unit tests
+        run: pytest
+
+      - name: Run code coverage
+        run: coverage run -m pytest
+        
+        # Collect coverage report
+      - name: Coverage report
+        run: coverage report
+
+      - name: Run security scan
+        run: bandit -r .
+
+      - name: Check for dependency vulnerabilities
+        run: safety check
+
+      - name: Build documentation
+        run: sphinx-build -b html docs sourcedir
+
+      - name: Type check
+        run: mypy 
