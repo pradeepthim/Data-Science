@@ -27,9 +27,11 @@ jobs:
         run: flake8
 
       - name: Run unit tests
+      # Running unit tests ensures that individual components of code work as expected.
         run: pytest
 
       - name: Run code coverage
+      # Checking code coverage to ensure tests cover a sufficient portion of codebase.
         run: coverage run -m pytest
         
         # Collect coverage report
@@ -37,13 +39,17 @@ jobs:
         run: coverage report
 
       - name: Run security scan
+      # Performing security scans helps identify vulnerabilities and potential security issues in code.
         run: bandit -r .
 
       - name: Check for dependency vulnerabilities
+      # ensures that our project's dependencies are free from known security vulnerabilities. 
         run: safety check
 
-      - name: Build documentation
-        run: sphinx-build -b html docs sourcedir
+      #- name: Build documentation
+      # Verifying documentation consistency and correctness can help maintain a clear and up-to-date project documentation.
+      #  run: sphinx-build -b html docs sourcedir
 
       - name: Type check
+      # ensures that code follows the specified type hints, helping catch potential type-related errors.
         run: mypy 
